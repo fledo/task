@@ -1,0 +1,36 @@
+#!/bin/bash
+# task
+# Simple task management
+# github.com/fledo/task
+# license: MIT
+task_file="/tmp/task"
+usage="Usage task [show|elapsed|started|done|abort|reset|help]"
+
+if [ -f $task_file ] ; then
+	case "$1" in
+		show|"")
+			cat $task_file ;;
+		elapsed)
+			echo $((($(date +%s) - $(stat -c %Y $task_file)) / 60)) minutes ;;
+		started)
+			date --date="@$(stat -c %Y $task_file)" ;;
+		abort|done)
+			rm $task_file ;;
+		reset)
+			touch $task_file ;;
+		help)
+			echo $usage ;;
+		*)
+			echo "$*" > $task_file && echo "Task replaced."
+	esac
+else 
+	case "$1" in
+		""|show|elapsed|started|abort|done|reset)
+			echo "No task started.";;
+		help)
+			echo $usage ;;
+		*)
+			echo "$*" > $task_file && echo "Task set."
+	esac
+fi
+exit 0
