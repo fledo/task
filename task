@@ -6,7 +6,7 @@
 task_file="/tmp/task"
 usage="Usage task [show|elapsed|started|done|abort|reset|help]"
 
-if [ -f $task_file ] ; then
+if [ -f $task_file ] ; then # A task has already been started
 	case "$1" in
 		show|"")
 			cat $task_file ;;
@@ -23,7 +23,7 @@ if [ -f $task_file ] ; then
 		*)
 			echo "$*" > $task_file && echo "Task replaced."
 	esac
-else 
+else # No task started yet
 	case "$1" in
 		""|show|elapsed|started|abort|done|reset)
 			echo "No task started.";;
